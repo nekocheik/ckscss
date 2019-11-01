@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+  <def def="
+  style(regular-text)={
+    r={1000px}
+    fs={ 
+      m={16}
+      r={1000px}
+      d={18}
+    };
+    fw={ 
+      m={16}
+      d={18}
+    };
+  };
+  "></def>
+  
+  <def def="
+  (regular-text)={
+    m={16}
+    r={1000px}
+    d={18}
+  };
+  ">
+  
+  <!-- //// v2 ///// -->
+  
+  <def def="
+  (regular-text)={
+    m=16;
+    r=1000px;
+    d=18;
+  };
+  ">
+</def>
+
+<def def="
+(regular-text)={
+  16-1000-18
+}
+">
+</def
+
+
+
+
+<div id="" class="
+fs={
+  m={16}
+  r={1000px}
+  d={18}
+}">
+</div>
+
+
+
+<div class="fs-16-80">
+</div>
+
+<div class="fs-16-17 ">
+</div>                  
+
+<div class="regular-text"
+>
+
+</div>
+
+</body>
+
+<script>
+  
+
+class Stylus {
+  setArg (string,start, end) {
+    let iStart;
+    let iEnd;
+    for (let i = 0; i < string.length; i++) {
+      let letter = string[i]
+      if (letter === start && !iStart) {
+        iStart = i
+      }
+      if (letter === end && iStart)  {
+        iEnd = i
+        return string.slice(iStart+1, iEnd)
+      }
+    }
+    if (!end) {
+      if(string[iStart] === start){
+        return start
+      }else{
+        console.log('non')
+      }
+    }
+    return string.slice(iStart+1, iEnd)
+  }
+  setattribute (e) {
+    let t = e
+    if (e.attributes){
+      if (e.attributes[0]) {
+        if (e.attributes[0].nodeValue) {
+          t = e.attributes[0].nodeValue  
+          return t
+        }
+      }
+    }
+  }
+}
+  
+</script>
+</html>
+
+
