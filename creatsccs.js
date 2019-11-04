@@ -1,19 +1,14 @@
 let RJSON = require('really-relaxed-json')
 
-
-
-
-
-
 // class Stylus {
-  
+
 //   constructor(){
 //     this.allAAtributesCss = this.setAttributes()
 //     // this.styleOfcss = new cssCreator
 //   }
-  
-  
-  
+
+
+
 //   setAttributes()  {
 //     let array = [];
 //     let domElement =  document.all
@@ -29,7 +24,7 @@ let RJSON = require('really-relaxed-json')
 //     })
 //     return array2
 //   }
-  
+
 //   setAttibute (e) {
 //     let t = e
 //     if (e.attributes){
@@ -82,7 +77,6 @@ let RJSON = require('really-relaxed-json')
 // }
 
 
-//16-1000-18
 
 let string = `  
 (regular)={
@@ -93,23 +87,24 @@ let string = `
 
 
 let stringTest = `
-(regular__text)
+(regular-text)
 {
-  media: { min-width: 1000 },
+  r: { min-width: 1000 }
   fs :{
-    v-min: 16,
-    media: 600,
-    v-max: 18,
+    v-min: 16
+    mw: 333
+    v-max: 18
   },
   fw: {
-    v-min: 16,
-    media: 600,
-    v-max: 18,
+    v-min: 16 
+    mw: 600
+    v-max: 18
   }
 }
 `
 
 
+//16-1000-18
 
 function setArg (string,start, end) {
   let iStart;
@@ -136,25 +131,52 @@ function setArg (string,start, end) {
 
 
 class createClass {
-  constructor (string) {
-    this.className = setArg(string, '(', ')')
-    string = string.replace(`(${this.className})`, '')
+  constructor (string, className) {
+    if (!className) {
+      this.className = setArg(string, '(', ')')
+      string = string.replace(`(${this.className})`, '')
+    }else{
+      this.className = className
+    }
+    console.log( JSON.parse(RJSON.toJson(string)) )
     this.params = JSON.parse(RJSON.toJson(string))
     this.scss;
+    this.childClass = []
     this.lookingStyle()
   }
-  clearPropertyName(){
-    this.allStyle = {
-      '[fs,]' : 'font-size'
+  
+  getAllStyle(){
+    let allStyle = {
+      'screen': '@media screen and','r': '@media screen and',
+      'fs': 'font-size',
+      'fw': 'font-weigth',
+      'minWidth': 'min-width','mw': 'min-width','min-w': 'min-width',
     }
-    
+    return allStyle
+  }
+  clearPropertyName(params, allStyle){
+    for (const key in params) {
+      this.clearPropertyName(key, allStyle)
+      if (typeof(params) === 'object') {
+        if (allStyle[key]) {
+          let newKey = this.getAllStyle()[key];
+          params[newKey] = params[key];
+          delete params[key]
+        }
+      }
+    }
+  }
+  recursiveCreatClass(){
     for (const key in this.params) {
-      key
+      if (key !== '@media screen and') {
+        let stringProperty = JSON.stringify(this.params[key])
+        //this.childClass.push(new createClass(stringProperty, this.className))
+      }
     }
   }
   lookingStyle(){
-    this.clearPropertyName()
+    this.clearPropertyName(this.params,  this.getAllStyle())
+    this.recursiveCreatClass()
   }
 }
 let className = new createClass(stringTest)
-// console.log(className)
